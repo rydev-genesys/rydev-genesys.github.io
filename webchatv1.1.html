@@ -52,38 +52,20 @@ let chatConfig = {
     "css": {
       "width": "100%",
       "height": "100%"
-    },
-	"standAloneApplication": false
+    }
   };
   
+  ININ.webchat.create(chatConfig, function(err, webchat) {
+      if (err) {
+          console.error(err);
+          throw err;
+      }
   
-//  ININ.webchat.create(chatConfig, function(err, webchat) {
-//      if (err) {
-//         console.error(err);
-//          throw err;
-//      }
-  
-//      webchat.renderPopup({
-//          width: 400,
-//          height: 400,
-//          title: 'Chat'
-//      });
-//  });
-
-	ININ.webchat.create(chatConfig).then(function(webchat) {
-  // Render to popup
-    return webchat.renderPopup({
-      width: 400,
-      height: 400,
-      title: 'Chat',
-      //set newTab to true if using screen share
-      newTab: true
-    }).catch(function(error) {
-      console.error('Error starting chat');
-      console.error(error);
-    });
-  }).catch(function(error) {
-    console.error('Error initializing chat');
-    console.error(error);
+      webchat.renderPopup({
+          width: 400,
+          height: 400,
+          title: 'Chat'
+      });
   });
+
 </script>
