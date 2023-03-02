@@ -1,0 +1,105 @@
+<script src="https://apps.usw2.pure.cloud/widgets/9.0/cxbus.min.js" onload="javascript:CXBus.configure({debug:false,pluginsPath:'https://apps.usw2.pure.cloud/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"></script>
+
+<script>
+  (function(a,t,c,l,o,u,d){a['_genesysJourneySdk']=o;a[o]=a[o]||function(){
+  (a[o].q=a[o].q||[]).push(arguments)},a[o].l=1*new Date();u=t.createElement(c),
+  d=t.getElementsByTagName(c)[0];u.async=1;u.src=l;u.charset='utf-8';d.parentNode.insertBefore(u,d)
+  })(window, document, 'script', 'https://apps.usw2.pure.cloud/journey/sdk/js/web/v1/ac.js', 'ac');
+  ac('init', '428d8d50-efde-474a-9d63-50b8484b2bd9', { region: 'usw2' });
+  ac('pageview');
+</script>
+
+<script>
+  window._genesys = {
+    "widgets": {
+      "webchat": {
+        "downloadGoogleFont": "false",
+        "googleFontUrl": "http://fonts.cdnfonts.com/css/roboto",
+        "transport": {
+          "type": "purecloud-v2-sockets",
+          "dataURL": "https://api.usw2.pure.cloud",
+          "deploymentKey": "2a4f4bcb-4469-4983-bb70-22b239fc9dfa",
+          "orgGuid": "428d8d50-efde-474a-9d63-50b8484b2bd9",
+          "interactionData": {
+            "routing": {
+              "targetType": "QUEUE",
+              "targetAddress": "us-en",
+              "priority": 2
+            }
+          },
+
+        },
+        "chatButton": {
+          "enabled": "true",
+          "template": "<div class="cx-widget cx-webchat-chat-button cx-side-button" role="button" tabindex="0" data-message="ChatButton" data-gcb-service-node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div>",
+          "effect": "fade",
+          "openDelay": "1000",
+          "effectDuration": "300",
+          "hideDuringInvite": "true"
+          },
+        "userData": {
+          "addressStreet": "",
+          "addressCity": "",
+          "addressPostalCode": "",
+          "addressState": "",
+          "phoneNumber": "",
+          "customField1Label": "Custom Field 1",
+          "customField1": "Custom Field 2",
+          "customField2Label": "Custom Field 3",
+          "customField2": "",
+          "customField3Label": "",
+          "customField3": ""
+        }
+      }
+    }
+  };
+
+  function getAdvancedConfig() {
+    return {
+      "form": {
+        "autoSubmit": false,
+        "firstname": "john",
+        "lastname": "doe",
+        "email": "",
+        "subject": ""
+      },
+      "formJSON": {
+        "wrapper": "<table></table>",
+        "inputs": [
+          {
+            "id": "cx_webchat_form_firstname",
+            "name": "firstname",
+            "maxlength": "100",
+            "placeholder": "Required",
+            "label": "First Name"
+          },
+          {
+            "id": "cx_webchat_form_lastname",
+            "name": "lastname",
+            "maxlength": "100",
+            "placeholder": "Required",
+            "label": "Last Name"
+          },
+          {
+            "id": "cx_webchat_form_email",
+            "name": "email",
+            "maxlength": "100",
+            "placeholder": "Optional",
+            "label": "Email"
+          },
+          {
+            "id": "cx_webchat_form_subject",
+            "name": "subject",
+            "maxlength": "100",
+            "placeholder": "Optional",
+            "label": "Subject"
+          }
+        ]
+      }
+    };
+  }
+
+  const customPlugin = CXBus.registerPlugin('Custom');
+</script>
+
+<button type="button" id="chat-button" onclick="customPlugin.command('WebChat.open', getAdvancedConfig());">Start Chat</button>
