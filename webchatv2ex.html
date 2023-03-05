@@ -1,113 +1,149 @@
-<script src="https://apps.usw2.pure.cloud/widgets/9.0/cxbus.min.js" onload="javascript:CXBus.configure({debug:false,pluginsPath:'https://apps.usw2.pure.cloud/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Genesys Cloud WebChat Demo</title>
+  <!--Sample taken from https://developer.genesys.cloud/commdigital/digital/webchat/widget-version2-->
+</head>
 
-<script>
-  (function(a,t,c,l,o,u,d){a['_genesysJourneySdk']=o;a[o]=a[o]||function(){
-  (a[o].q=a[o].q||[]).push(arguments)},a[o].l=1*new Date();u=t.createElement(c),
-  d=t.getElementsByTagName(c)[0];u.async=1;u.src=l;u.charset='utf-8';d.parentNode.insertBefore(u,d)
-  })(window, document, 'script', 'https://apps.usw2.pure.cloud/journey/sdk/js/web/v1/ac.js', 'ac');
-  ac('init', '428d8d50-efde-474a-9d63-50b8484b2bd9', { region: 'usw2' });
-  ac('pageview');
-</script>
+<body>
 
-<script>
-  window._genesys = {
-    "widgets": {
-      "webchat": {
-        "chatButton": {
-            "enabled": "true", // (boolean) Enable/disable chat button on screen.
-            "template": '<div>Live Chat</div>', // (string) Custom HTML string template for chat button.
-            "effect": "fade",         // (string) Type of animation effect when revealing chat button. 'slide' or 'fade'.
-            "openDelay": "1000",        // (number) Number of milliseconds before displaying chat button on screen.
-            "effectDuration": "300",    // (number) Length of animation effect in milliseconds.
-            "hideDuringInvite": "true"  // (boolean) When auto-invite feature is activated, hide the chat button. When invite is dismissed, reveal the chat button again.
+  <!--Create a Widgets configuration object-->
+  <script type="text/javascript">
+
+    window._genesys = {
+        widgets: {
+        main: {
+            preload: ["webchat"],
+            theme: "light",
+            downloadGoogleFont: !0,
+            googleFontUrl: "https://apps.usw2.pure.cloud/webfonts/roboto.css"
         },
-        "downloadGoogleFont": "false",
-        "googleFontUrl": "http://fonts.cdnfonts.com/css/roboto",
-        "transport": {
-          "type": "purecloud-v2-sockets",
-          "dataURL": "https://api.usw2.pure.cloud",
-          "deploymentKey": "2a4f4bcb-4469-4983-bb70-22b239fc9dfa",
-          "orgGuid": "428d8d50-efde-474a-9d63-50b8484b2bd9",
-          "interactionData": {
-            "routing": {
-              "targetType": "QUEUE",
-              "targetAddress": "us-en",
-              "priority": 2
+        webchat: {
+            transport: {
+                type: "purecloud-v2-sockets",
+                dataURL: "https://api.usw2.pure.cloud",
+                deploymentKey: "2a4f4bcb-4469-4983-bb70-22b239fc9dfa",
+                orgGuid: "428d8d50-efde-474a-9d63-50b8484b2bd9",
+                interactionData: {}
+            },
+            chatButton: {
+                enabled: !0,
+                template: '<div class="cx-widget cx-webchat-chat-button cx-side-button" role="button" tabindex="0" data- message="ChatButton" data - gcb - service - node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div> ',
+                effect: "fade",
+                openDelay: 1e3,
+                effectDuration: 300,
+                hideDuringInvite: !0
+            },
+            form: {
+                wrapper: "<table></table>",
+                inputs: [{
+                    id: "cx_webchat_form_firstname",
+                    name: "firstname",
+                    maxlength: "100",
+                    placeholder: "Optional",
+                    label: "First Name"
+                }, {
+                    id: "cx_webchat_form_lastname",
+                    name: "lastname",
+                    maxlength: "100",
+                    placeholder: "Optional",
+                    label: "Last Name"
+                }, {
+                    id: "cx_webchat_form_email",
+                    name: "email",
+                    maxlength: "100",
+                    placeholder: "Required",
+                    label: "Email",
+                    validate: function(e, t, a, n, s, c, o) {
+                        var d = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,"gm");
+                        return !!(a && a.val() && d.test(a.val()))
+                    }
+                }]
             }
-          },
-
-        },
-/*      "chatButton": {
-          "enabled": "true",
-          "template": "<div class="cx-widget cx-webchat-chat-button cx-side-button" role="button" tabindex="0" data-message="ChatButton" data-gcb-service-node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div>",
-          "effect": "fade",
-          "openDelay": "1000",
-          "effectDuration": "300",
-          "hideDuringInvite": "true"
-          },*/
-        "userData": {
-          "addressStreet": "",
-          "addressCity": "",
-          "addressPostalCode": "",
-          "addressState": "",
-          "phoneNumber": "",
-          "customField1Label": "Custom Field 1",
-          "customField1": "Custom Field 2",
-          "customField2Label": "Custom Field 3",
-          "customField2": "",
-          "customField3Label": "",
-          "customField3": ""
         }
-      }
     }
-  };
-
-  function getAdvancedConfig() {
-    return {
-      "form": {
-        "autoSubmit": false,
-        "firstname": "john",
-        "lastname": "doe",
-        "email": "",
-        "subject": ""
-      },
-      "formJSON": {
-        "wrapper": "<table></table>",
-        "inputs": [
-          {
-            "id": "cx_webchat_form_firstname",
-            "name": "firstname",
-            "maxlength": "100",
-            "placeholder": "Required",
-            "label": "First Name"
-          },
-          {
-            "id": "cx_webchat_form_lastname",
-            "name": "lastname",
-            "maxlength": "100",
-            "placeholder": "Required",
-            "label": "Last Name"
-          },
-          {
-            "id": "cx_webchat_form_email",
-            "name": "email",
-            "maxlength": "100",
-            "placeholder": "Optional",
-            "label": "Email"
-          },
-          {
-            "id": "cx_webchat_form_subject",
-            "name": "subject",
-            "maxlength": "100",
-            "placeholder": "Optional",
-            "label": "Subject"
-          }
-        ]
-      }
     };
-  }
 
-  const customPlugin = CXBus.registerPlugin('Custom');
-</script>
+   </script>
 
-<!--<button type="button" id="chat-button" onclick="customPlugin.command('WebChat.open', getAdvancedConfig());">Start Chat</button>-->
+   <!-- Load CXBus and the widgets-core plugin -->
+   <script src="https://apps.usw2.pure.cloud/widgets/9.0/cxbus.min.js" onload="javascript:CXBus.configure({debug:false,pluginsPath:'https://apps.usw2.pure.cloud/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"></script>
+
+   <!-- Optional: Use CXBus to create plugins, subscribe to events, or call commands -->
+   <script type="text/javascript">
+
+    const customPlugin = CXBus.registerPlugin('Custom');
+
+    customPlugin.subscribe('WebChatService.started', function (e) {
+      console.log('Chat started', e);
+    });
+
+    customPlugin.subscribe('WebChatService.ended', function (e) {
+      console.log('Chat ended', e);
+    });
+  </script>
+
+
+
+<!-- <button type="button" id="chat-button-simple" onclick="customPlugin.command('WebChat.open');">Start Chat (simple)</button> -->
+
+  <script type="text/javascript">
+		function getAdvancedConfig() {
+			return {
+				form: {
+					autoSubmit: false,
+					firstname: 'Praenomen',
+					lastname: 'Gens',
+					email: 'praenomen.gens@calidumlitterae.com',
+					subject: 'Populated from data'
+				},
+				formJSON: {
+					wrapper: '<table></table>',
+					inputs: [
+						// Default fields
+						{
+							id: 'cx_webchat_form_firstname',
+							name: 'firstname',
+							maxlength: '100',
+							placeholder: 'Required',
+							label: 'First Name'
+						},
+						{
+							id: 'cx_webchat_form_lastname',
+							name: 'lastname',
+							maxlength: '100',
+							placeholder: 'Required',
+							label: 'Last Name'
+						},
+						{
+							id: 'cx_webchat_form_email',
+							name: 'email',
+							maxlength: '100',
+							placeholder: 'Optional',
+							label: 'Email'
+						},
+						{
+							id: 'cx_webchat_form_subject',
+							name: 'subject',
+							maxlength: '100',
+							placeholder: 'Optional',
+							label: 'Subject'
+						},
+						// Custom Fields
+						{
+							id: 'custom_field_1',
+							name: 'customField1',
+							maxlength: '100',
+							placeholder: 'Custom Data',
+							label: 'Custom Field 1',
+							value: 'My Custom Value'
+						}
+					]
+				}
+			};
+		}
+	</script>
+	<button type="button" id="chat-button" onclick="customPlugin.command('WebChat.open', getAdvancedConfig());">Start Chat (with data)</button>
+</body>
+</html>
