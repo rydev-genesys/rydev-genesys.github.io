@@ -27,15 +27,6 @@
               }
             }
           },
-          chatButton: {
-                enabled: true, // (boolean) Enable/disable chat button on screen.
-                template: '<div>Live Chat</div>', // (string) Custom HTML string template for chat button.
-                //template: '<div class="cx-widget cx-webchat-chat-button cx-side-button" role="button" tabindex="0" data- message="ChatButton" data - gcb - service - node="true"><span class="cx-icon" data-icon="chat"></span><span class="i18n cx-chat-button-label" data-message="ChatButton"></span></div> ',
-                //effect: 'fade',         // (string) Type of animation effect when revealing chat button. 'slide' or 'fade'.
-                //openDelay: 0,        // (number) Number of milliseconds before displaying chat button on screen.
-                //effectDuration: 300,    // (number) Length of animation effect in milliseconds.
-                //hideDuringInvite: true  // (boolean) When auto-invite feature is activated, hide the chat button. When invite is dismissed, reveal the chat button again.
-            },
           userData: {
             addressStreet: '64472 Brown Street',
             addressCity: 'Lindgrenmouth',
@@ -57,7 +48,7 @@
    </script>
 
    <!-- Load CXBus and the widgets-core plugin -->
-   <script src="https://apps.mypurecloud.com/widgets/9.0/cxbus.min.js" onload="javascript:CXBus.configure({debug:false,pluginsPath:'https://apps.mypurecloud.com/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"></script>
+   <script src="https://apps.usw2.pure.cloud/widgets/9.0/cxbus.min.js" onload="javascript:CXBus.configure({debug:false,pluginsPath:'https://apps.usw2.pure.cloud/widgets/9.0/plugins/'}); CXBus.loadPlugin('widgets-core');"></script>
 
    <!-- Optional: Use CXBus to create plugins, subscribe to events, or call commands -->
    <script type="text/javascript">
@@ -75,7 +66,7 @@
 
 
 
-<!-- <button type="button" id="chat-button-simple" onclick="customPlugin.command('WebChat.open');">Start Chat (simple)</button> -->
+  <button type="button" id="chat-button-simple" onclick="customPlugin.command('WebChat.open');">Start Chat (simple)</button>
 
   <script type="text/javascript">
 		function getAdvancedConfig() {
