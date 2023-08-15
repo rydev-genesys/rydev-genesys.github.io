@@ -17,6 +17,8 @@
 </script>
 
 <p>Genesys Cloud WebChat test page</p>
+<li> <a href="https://path-e-tech.netlify.app/webmessenger.html">Web Messenger Netlify</a> </li>
+<li> <a href="https://rydev-genesys.github.io/webmessenger.html">Web Messenger Github</a> </li>
 
 <head lang="en">
 </head>
@@ -27,15 +29,15 @@
     Genesys("subscribe", "Launcher.ready", function() {
                 console.log("Launcher ready");
                 });
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready-->
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready
                 Genesys("subscribe", "Messenger.ready", function() {
                 console.log("Messenger ready");
                 setTimeout(function(){Genesys("command", "Messenger.open");},1000);
                 });
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready-->    
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready
                 Genesys("subscribe", "Conversations.ready", function() {
                 console.log("Conversations ready");
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready-->    				
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready 				
                 });
     </script>
 -->
