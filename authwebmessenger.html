@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 
-<script src="https://global.oktacdn.com/okta-auth-js/5.2.2/okta-auth-js.min.js" type="text/javascript"></script>
-
-
 <script type="text/javascript" charset="utf-8">
   (function (g, e, n, es, ys) {
     g['_genesysJs'] = e;
@@ -25,93 +22,6 @@
 <li> <a href="https://rydev-genesys.github.io/webmessenger.html">Web Messenger Github</a> </li>
 
 <head lang="en">
-
-<script>
-
-    function generateCodeVerifier(length) {
-              let text = '';
-              const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-              for (let i = 0; i < length; i++) {
-                  text += possible.charAt(Math.floor(Math.random() * possible.length));
-              }
-              return text;
-     }
-  
-  
-    const oktaConfig = {
-            redirectUri: 'https://rydev-genesys.github.io/',
-            postLogoutRedirectUri: 'https://rydev-genesys.github.io/',
-            clientId: '0oadalk9aoNhKHDwm5d7',
-            issuer: 'https://dev-03520224.okta.com/oauth2/default', //https://dev-03520224.okta.com/oauth2/default
-            scopes: ['openid', 'email', 'profile', 'offline_access'],
-            pkce: false,
-            responseType: 'code',
-            maxAge : 86400
-    };
-    const authClient = new OktaAuth(oktaConfig);
-  
-    (function() {
-  
-        Genesys('registerPlugin', 'AuthProvider', (AuthProvider) => {
-  
-          var url =window.location.href;
-                  if(url.indexOf('code')<=-1){
-                    authClient.signInWithRedirect({
-                        originalUri:'http://localhost',
-                        ...oktaConfig
-                    });
-                  }
-                  else {
-                    let oktaTransactionStorage = window.document.cookie.toString(); // Get nonce from cookie
-  
-                    var nonce1='';
-                    if (oktaTransactionStorage) {
-                      const storage = oktaTransactionStorage.split('okta-oauth-nonce=')[1]; // Extract 'okta-oauth-nonce' cookie from 'oktaTransactionStorage'
-                      nonce1= storage.split(';')[0];
-                    }
-  
-                    const urlParams = new URLSearchParams(window.location.search); // Get the authorization response which is added as a query string from the redirect URL
-                    const authCode1 = urlParams.has('code') ? urlParams.get('code'):''; // Get code from the query string
-                    var codeVerif=JSON.parse(window.sessionStorage.getItem("okta-transaction-storage")).codeVerifier;
-  
-                    var verifier = generateCodeVerifier(128); 
-  
-                    console.log('authcode: '+authCode1);
-                    console.log('codeVerif: '+codeVerif);
-                    console.log('nonce1: '+nonce1);
-                    console.log('verifier: '+verifier)
-                        /* Register Command - mandatory */
-  
-                    AuthProvider.registerCommand('getAuthCode', (e) => {
-                        e.resolve({
-                            authCode: authCode1,  
-                            redirectUri: 'http://localhost',  
-                            nonce: nonce1,  
-                            maxAge: 86400,      
-                            codeVerifier: verifier  
-                          });
-                      
-  
-                    });
-  
-                    AuthProvider.subscribe('Auth.ready', (res) => {
-                            //bAuthenticated = AuthProvider.data('Auth.authenticated');
-                            console.log('AUTH READY');
-                            console.log(res);
-                    });
-  
-                    AuthProvider.subscribe('Auth.authenticated', (res) => {
-                                console.log('Auth.authenticated');
-                                console.log(res);
-                    });
-                      
-                    AuthProvider.ready();
-  
-                  }
-  
-        });
-        
-      })(); 
 
 </head>
 <body>
