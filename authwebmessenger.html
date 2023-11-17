@@ -16,87 +16,38 @@
 
 <script>
 
-  function generateCodeVerifier(length) {
-            let text = '';
-            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-            for (let i = 0; i < length; i++) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
-   }
+Genesys('registerPlugin', 'AuthProvider', (AuthProvider) => {
 
+// COMMAND
+// *********
+// getAuthCode
 
-  const oktaConfig = {
-          redirectUri: 'https://rydev-genesys.github.io/authmessenger.html',
-          postLogoutRedirectUri: 'https://rydev-genesys.github.io/authmessenger.html',
-          clientId: '0oadalk9aoNhKHDwm5d7',
-          issuer: 'https://dev-03520224-admin.okta.com',
-          scopes: ['openid', 'email', 'profile', 'offline_access'],
-          pkce: false,
-          responseType: 'code',
-          maxAge : 86400
-  };
-  const authClient = new OktaAuth(oktaConfig);
+let oktaTransactionStorage = window.document.cookie.toString(); // Get nonce from cookie
 
-  (function() {
+if (oktaTransactionStorage) {
+const storage = oktaTransactionStorage.split('okta-oauth-nonce=')[1]; // Extract 'okta-oauth-nonce' cookie from 'oktaTransactionStorage'
+const nonce = storage.split(';')[0];
+}
 
-      Genesys('registerPlugin', 'AuthProvider', (AuthProvider) => {
+const urlParams = new URLSearchParams(window.location.search); // Get the authorization response which is added as a query string from the redirect URL
+const authCode = urlParams.has('code') ? urlParams.get('code'); // Get code from the query string
+const iss = urlParams.has('iss') ? urlParams.get('iss'); // Get optional iss parameter from the query string. urlParams will decode this issuer URL if it is encoded.
 
-        var url =window.location.href;
-                if(url.indexOf('code')<=-1){
-                  authClient.signInWithRedirect({
-                      originalUri:'http://localhost',
-                      ...oktaConfig
-                  });
-                }
-                else {
-                  let oktaTransactionStorage = window.document.cookie.toString(); // Get nonce from cookie
+/* Register Command - mandatory */
 
-                  var nonce1='';
-                  if (oktaTransactionStorage) {
-                    const storage = oktaTransactionStorage.split('okta-oauth-nonce=')[1]; // Extract 'okta-oauth-nonce' cookie from 'oktaTransactionStorage'
-                    nonce1= storage.split(';')[0];
-                  }
+AuthProvider.registerCommand('getAuthCode', (e) => {
 
-                  const urlParams = new URLSearchParams(window.location.search); // Get the authorization response which is added as a query string from the redirect URL
-                  const authCode1 = urlParams.has('code') ? urlParams.get('code'):''; // Get code from the query string
-                  var codeVerif=JSON.parse(window.sessionStorage.getItem("okta-transaction-storage")).codeVerifier;
+//Messenger calls this command to get the the tokens.
 
-                  var verifier = generateCodeVerifier(128); 
+e.resolve({
+    authCode: <authCode>,			// Pass your authCode here
+    redirectUri: <your redirect uri>,	   // Pass the redirection URI configured in your authentication provider here
+    nonce: <nonce>,				//  Mandatory parameter in OKTA Javascript SDK approach.
+    maxAge: <maxAge>				// Pass the elapsed time in seconds as an optional parameter
+    codeVerifier: <codeVerifier>		// For PKCE Oauth flow: If you use the Okta Auth JavaScript SDK to authenticate signin, get the code verifier from session storage. If you use the endpoint to authenticate signin, pass a cryptographically random string that you used to generate the codeChallenge value.
+    iss: <iss>					// Pass the optional parameter iss if it was returned in the authorization response by your Authentication provider.
+  });
+});
+});
 
-                  console.log('authcode: '+authCode1);
-                  console.log('codeVerif: '+codeVerif);
-                  console.log('nonce1: '+nonce1);
-                  console.log('verifier: '+verifier)
-                      /* Register Command - mandatory */
-
-                  AuthProvider.registerCommand('getAuthCode', (e) => {
-                      e.resolve({
-                          authCode: authCode1,  
-                          redirectUri: 'http://localhost',  
-                          nonce: nonce1,  
-                          maxAge: 86400,      
-                          codeVerifier: verifier  
-                        });
-                    
-
-                  });
-
-                  AuthProvider.subscribe('Auth.ready', (res) => {
-                          //bAuthenticated = AuthProvider.data('Auth.authenticated');
-                          console.log('AUTH READY');
-                          console.log(res);
-                  });
-
-                  AuthProvider.subscribe('Auth.authenticated', (res) => {
-                              console.log('Auth.authenticated');
-                              console.log(res);
-                  });
-                    
-                  AuthProvider.ready();
-
-                }
-
-      });
-      
-    })(); 
+</script>
