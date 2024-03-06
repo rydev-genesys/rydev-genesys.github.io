@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<script type="text/javascript" charset="utf-8">
+  (function (g, e, n, es, ys) {
+    g['_genesysJs'] = e;
+    g[e] = g[e] || function () {
+      (g[e].q = g[e].q || []).push(arguments)
+    };
+    g[e].t = 1 * new Date();
+    g[e].c = es;
+    ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+  })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+    environment: 'prod-usw2',
+    deploymentId: 'b934ac19-5805-4233-a222-e2bbebcf4e89'
+  });
+</script>
+
+<script type="text/javascript">
+  const customLauncher = document.getElementById('custom-launcher'); // Custom launcher button
+  let bMessengerOpened = false; // Initial status of Messenger: closed
+
+  // #1 Subscribe to the Messenger.ready event - Show custom launcher button when Messenger is ready
+  Genesys(
+    'subscribe',
+    'Messenger.ready',
+    (e) => (customLauncher.style.display = 'block')
+  );
+
+  // #2 Subscribe to the Messenger.opened event - Update the status of Messenger as opened
+  Genesys('subscribe', 'Messenger.opened', (e) => {
+    bMessengerOpened = true;
+    /*
+    Update your custom launcher button here indicating a Messenger opened state i.e. show a KeyboardArrowDownIcon
+    or hide your custom launcher button if you prefer not to indicate that Messenger is opened
+  */
+    customLauncher.style.display = 'none';
+    console.log(e);
+  });
+
+  // #3 Subscribe to the Messenger.closed event - Update the status of Messenger as closed
+  Genesys('subscribe', 'Messenger.closed', (e) => {
+    bMessengerOpened = false;
+    /*
+    Update your custom launcher button here indicating a Messenger closed state i.e. show a MessageIcon
+    or show your custom launcher button if you prefer to indicate that Messenger is closed
+  */
+    customLauncher.style.display = 'block';
+    console.log(e);
+  });
+
+  const openMessenger = () => {
+    console.log('Opening messenger...');
+    Genesys('command', 'Messenger.open');
+  };
+  const closeMessenger = () => {
+    console.log('Closing messenger...');
+    Genesys('command', 'Messenger.close');
+  };
+
+  const toggleMessenger = () => {
+    bMessengerOpened ? closeMessenger() : openMessenger();
+  };
+</script>
+
+
+<p>Genesys Cloud WebChat test page</p>
+<li> <a href="https://path-e-tech.netlify.app/webmessenger3.html">Web Messenger Netlify</a> </li>
+<li> <a href="https://rydev-genesys.github.io/webmessenger3.html">Web Messenger Github</a> </li>
+
+<head lang="en">
+</head>
+<body>
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+    Genesys("subscribe", "Launcher.ready", function() {
+                console.log("Launcher ready");
+                });
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready
+                Genesys("subscribe", "Messenger.ready", function() {
+                console.log("Messenger ready");
+                setTimeout(function(){Genesys("command", "Messenger.open");},1000);
+                });
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready
+                Genesys("subscribe", "Conversations.ready", function() {
+                console.log("Conversations ready");
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready 				
+                });
+    </script>
+-->
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+      Genesys("command", "Database.set", { 
+        messaging: {
+           customAttributes: {
+             key: 'value' 
+            }
+          }
+        }
+        );
+
+  </script>
+-->   
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+    Genesys("command", "Database.get", { 
+      name: "messaging.customAttributes"},
+      function (e){
+        console.log(e)}
+    );
+  </script>
+-->   
+
+</body>
+</html>
