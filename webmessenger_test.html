@@ -1,6 +1,10 @@
 
 
 
+<button type="button" id="custom-launcher" style="display: none;" onclick="toggleMessenger()">
+    Custom Launcher Button
+</button>
+
 <button type="button" id="custom-launcher" onclick="toggleMessenger()">
   Messenger
 </button>
@@ -14,4 +18,51 @@
         }
       );
     }
+  </script>
+
+<script type="text/javascript">
+    const customLauncher = document.getElementById('custom-launcher'); // Custom launcher button
+    let bMessengerOpened = false; // Initial status of Messenger: closed
+
+    // #1 Subscribe to the Messenger.ready event - Show custom launcher button when Messenger is ready
+    Genesys(
+      'subscribe',
+      'Messenger.ready',
+      (e) => (customLauncher.style.display = 'block')
+    );
+
+    // #2 Subscribe to the Messenger.opened event - Update the status of Messenger as opened
+    Genesys('subscribe', 'Messenger.opened', (e) => {
+      bMessengerOpened = true;
+      /*
+      Update your custom launcher button here indicating a Messenger opened state i.e. show a KeyboardArrowDownIcon
+      or hide your custom launcher button if you prefer not to indicate that Messenger is opened
+    */
+      customLauncher.style.display = 'none';
+      console.log(e);
+    });
+
+    // #3 Subscribe to the Messenger.closed event - Update the status of Messenger as closed
+    Genesys('subscribe', 'Messenger.closed', (e) => {
+      bMessengerOpened = false;
+      /*
+      Update your custom launcher button here indicating a Messenger closed state i.e. show a MessageIcon
+      or show your custom launcher button if you prefer to indicate that Messenger is closed
+    */
+      customLauncher.style.display = 'block';
+      console.log(e);
+    });
+
+    const openMessenger = () => {
+      console.log('Opening messenger...');
+      Genesys('command', 'Messenger.open');
+    };
+    const closeMessenger = () => {
+      console.log('Closing messenger...');
+      Genesys('command', 'Messenger.close');
+    };
+
+    const toggleMessenger = () => {
+      bMessengerOpened ? closeMessenger() : openMessenger();
+    };
   </script>
