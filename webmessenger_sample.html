@@ -28,18 +28,51 @@
     Genesys("subscribe", "Launcher.ready", function() {
                 console.log("Launcher ready");
                 });
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready-->
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready
                 Genesys("subscribe", "Messenger.ready", function() {
                 console.log("Messenger ready");
                 setTimeout(function(){Genesys("command", "Messenger.open");},1000);
                 });
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready-->    
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready
                 Genesys("subscribe", "Conversations.ready", function() {
                 console.log("Conversations ready");
-<!--https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready-->    				
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready 				
                 });
     </script>
 -->
+
+<!-- EXTRA SETUP DATABASE PLUGIN FOR WEB MESSENGER -->
+<!-- Https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/pluginExamples#define-and-send-custom-attributes -->
+<script type="text/javascript" charset="utf-8">
+  Genesys("command", "Database.set", {
+    messaging: {
+      customAttributes: {
+        department: "sales",
+        property_type: "home_office",
+        device: "mobile"
+      }
+    }
+  });
+
+  Genesys("command", "Database.update", {
+    messaging: {
+      customAttributes: {
+        department: "support",
+        booking_id: "54321"
+      }
+    }
+  });
+</script>
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+    Genesys("command", "Database.get", { 
+      name: "messaging.customAttributes"},
+      function (e){
+        console.log(e)}
+    );
+  </script>
+-->   
 
 </body>
 </html>

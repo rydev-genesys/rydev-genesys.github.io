@@ -1,3 +1,6 @@
+<script src="https://global.oktacdn.com/okta-auth-js/5.2.2/okta-auth-js.min.js" type="text/javascript"></script>
+
+
 <script type="text/javascript" charset="utf-8">
   (function (g, e, n, es, ys) {
     g['_genesysJs'] = e;
@@ -8,46 +11,23 @@
     g[e].c = es;
     ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
   })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
-    environment: 'usw2',
-    deploymentId: 'b725e90b-7565-4d21-b0a5-a34579777cef',
-    debug: true // optional - Enables Genesys browser console logging
+    environment: 'prod-usw2',
+    deploymentId: 'b725e90b-7565-4d21-b0a5-a34579777cef'
   });
 </script>
 
+
+
 <script>
-
-Genesys('registerPlugin', 'AuthProvider', (AuthProvider) => {
-
-// COMMAND
-// *********
-// getAuthCode
-
-let oktaTransactionStorage = window.document.cookie.toString(); // Get nonce from cookie
-
-if (oktaTransactionStorage) {
-const storage = oktaTransactionStorage.split('okta-oauth-nonce=')[1]; // Extract 'okta-oauth-nonce' cookie from 'oktaTransactionStorage'
-const nonce = storage.split(';')[0];
-}
-
-const urlParams = new URLSearchParams(window.location.search); // Get the authorization response which is added as a query string from the redirect URL
-const authCode = urlParams.has('code') ? urlParams.get('code'); // Get code from the query string
-const iss = urlParams.has('iss') ? urlParams.get('iss'); // Get optional iss parameter from the query string. urlParams will decode this issuer URL if it is encoded.
-
-/* Register Command - mandatory */
-
-AuthProvider.registerCommand('getAuthCode', (e) => {
-
-//Messenger calls this command to get the the tokens.
-
-e.resolve({
-    authCode: <authCode>,			// Pass your authCode here
-    redirectUri: <your redirect uri>,	   // Pass the redirection URI configured in your authentication provider here
-    nonce: <nonce>,				//  Mandatory parameter in OKTA Javascript SDK approach.
-    maxAge: <maxAge>				// Pass the elapsed time in seconds as an optional parameter
-    codeVerifier: <codeVerifier>		// For PKCE Oauth flow: If you use the Okta Auth JavaScript SDK to authenticate signin, get the code verifier from session storage. If you use the endpoint to authenticate signin, pass a cryptographically random string that you used to generate the codeChallenge value.
-    iss: <iss>					// Pass the optional parameter iss if it was returned in the authorization response by your Authentication provider.
-  });
-});
-});
-
+const oktaConfig = {
+	redirectUri: "https://rydev-genesys.github.io/authwebmessenger.html",
+	postLogoutRedirectUri: "https://rydev-genesys.github.io/authwebmessenger.html",
+	clientId: "0oafwp4lbkbu7IjsA5d7",
+	issuer: "https://dev-03520224.okta.com/oauth2/default",
+	scopes: ['openid', 'email', 'profile', 'offline_access'],
+	pkce: false, // default is true. Set to 'false' in case of implcit/authorization code flow
+	responseType: 'code',
+	maxAge : "86600"
+};
+const authClient = new OktaAuth(oktaConfig)		
 </script>
