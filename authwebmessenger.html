@@ -30,4 +30,10 @@ const oktaConfig = {
 	maxAge : "86600"
 };
 const authClient = new OktaAuth(oktaConfig)		
+
+authClient.signInWithRedirect({
+	originalUri: "https://rydev-genesys.github.io/authwebmessenger.html",
+	...oktaConfig
+	});
+
 </script>
