@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<input type=“text” id=“device” placeholder='Enter Device'> 
+
+<!--REPLACE WITH ORG's WEB MESSENGER CODE SNIPPET BELOW-->
+<script type="text/javascript" charset="utf-8">
+  (function (g, e, n, es, ys) {
+    g['_genesysJs'] = e;
+    g[e] = g[e] || function () {
+      (g[e].q = g[e].q || []).push(arguments)
+    };
+    g[e].t = 1 * new Date();
+    g[e].c = es;
+    ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+  })(window, 'Genesys', 'https://apps.<REGION>/genesys-bootstrap/genesys.min.js', {
+    environment: '<REGION_shorthand>',
+    deploymentId: '<ORG_DEPLOYMENTID>',
+    debug: true // optional - Enables Genesys browser console logging
+  });
+</script>
+
+<p>Genesys Cloud WebChat test page</p>
+
+<head lang="en">
+</head>
+<body>
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+    Genesys("subscribe", "Launcher.ready", function() {
+                console.log("Launcher ready");
+                });
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/launcherPlugin#launcher-ready
+                Genesys("subscribe", "Messenger.ready", function() {
+                console.log("Messenger ready");
+                setTimeout(function(){Genesys("command", "Messenger.open");},1000);
+                });
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/messengerPlugin#messenger-ready
+                Genesys("subscribe", "Conversations.ready", function() {
+                console.log("Conversations ready");
+//https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/SDKCommandsEvents/conversationsPlugin#conversations-ready 				
+                });
+    </script>
+-->
+
+<!-- EXTRA SETUP DATABASE PLUGIN FOR WEB MESSENGER -->
+<!-- Https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/pluginExamples#define-and-send-custom-attributes -->
+<script type="text/javascript" charset="utf-8">
+  Genesys("command", "Database.set", {
+    messaging: {
+      customAttributes: {
+        department: "sales",
+        property_type: "home_office",
+        //device: "mobile"
+        device: document.getElementById(‘device’).value
+      }
+    }
+  });
+
+  Genesys("command", "Database.update", {
+    messaging: {
+      customAttributes: {
+        department: "support",
+        booking_id: "54321"
+      }
+    }
+  });
+</script>
+
+<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
+  <script type="text/javascript" charset="utf-8">
+    Genesys("command", "Database.get", { 
+      name: "messaging.customAttributes"},
+      function (e){
+        console.log(e)}
+    );
+  </script>
+-->   
+
+</body>
+</html>
