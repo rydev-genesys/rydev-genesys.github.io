@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<input type=“text” id=“device” placeholder='Enter Device'> 
+<input type=“text” id=“device” placeholder=“Enter Device”> 
 
 <!--REPLACE WITH ORG's WEB MESSENGER CODE SNIPPET BELOW-->
 <script type="text/javascript" charset="utf-8">
@@ -44,7 +44,7 @@
 -->
 
 <!-- EXTRA SETUP DATABASE PLUGIN FOR WEB MESSENGER -->
-<!-- Https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/pluginExamples#define-and-send-custom-attributes -->
+<!-- Https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/pluginExamples#define-and-send-custom-attributes
 <script type="text/javascript" charset="utf-8">
   Genesys("command", "Database.set", {
     messaging: {
@@ -55,7 +55,12 @@
         device: document.getElementById(‘device’).value
       }
     }
-  });
+  }); -->
+
+
+  <script type=“text/javascript” charset=“utf-8”> 
+  
+    Genesys(“command”, “Database.get”, { name: “messaging.customAttributes”}, function(e) { //console.log(e); let deviceValue = e.device; if (document.getElementById(‘device’).value) { Genesys(“command”, “Database.set”, { messaging: { customAttributes: { department: “sales”, property_type: “home_office”, device: document.getElementById(‘device’).value } } }); } else { Genesys(“command”, “Database.set”, { messaging: { customAttributes: { department: “sales”, property_type: “home_office”, device: “mobile” } } }); } }); 
 
   Genesys("command", "Database.update", {
     messaging: {
