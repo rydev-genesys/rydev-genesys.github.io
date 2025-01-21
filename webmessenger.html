@@ -23,6 +23,17 @@
 <head lang="en">
 </head>
 <body>
+  
+<script type="text/javascript" charset="utf-8">
+  Genesys("command", "MessagingService.clearConversation", 
+  {}, 
+  function() {
+  /*fulfilled callback*/
+  },
+  function() {
+  /*rejected callback*/
+  });
+</script>
 
 <!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
   <script type="text/javascript" charset="utf-8">
