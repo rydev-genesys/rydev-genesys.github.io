@@ -24,6 +24,27 @@
 </head>
 <body>
 
+<script type="text/javascript" charset="utf-8">
+  var bFormFilled = false;
+  var bMessengerCleared = false;
+
+  Genesys("subscribe", "Messenger.ready", function(){
+      console.log('messenger ready');
+      document.getElementById("startchatbutton").style.display = "block";
+  });
+
+  Genesys("subscribe", "Messenger.closed", function(){
+      console.log('messenger closed');
+
+  });
+
+  Genesys("subscribe", "MessagingService.conversationCleared", function(){
+      console.log('messenger cleared');
+      bFormFilled = false;
+  });
+</script>
+
+
 <!--
 <script type="text/javascript" charset="utf-8">
   Genesys("command", "MessagingService.clearConversation", 
