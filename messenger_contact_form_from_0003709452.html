@@ -1,0 +1,101 @@
+<html>
+    <header>
+
+        <script type="text/javascript" charset="utf-8">
+            (function (g, e, n, es, ys) {
+              g['_genesysJs'] = e;
+              g[e] = g[e] || function () {
+                (g[e].q = g[e].q || []).push(arguments)
+              };
+              g[e].t = 1 * new Date();
+              g[e].c = es;
+              ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+            })(window, 'Genesys', 'https://apps.euw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+                environment: 'prod-euw2',
+                deploymentId: 'c22855f5-xxxx-yyyy-zzzz-b21a437f169f',
+            });
+          </script>
+
+    </header>
+    <body>
+
+      <br />
+      <br />
+      <br />
+      <br />
+
+      <div>
+         <button id="startchatbutton" onclick="ShowContactForm()" style="display:none">Start Chat</button>
+      </div>
+
+      <div id="contactForm" style="display:none">
+            Contact Form
+            <br />
+            <table>
+              <tr>
+                <td>First Name:</td>
+                <td><input type="text" id="cx_webchat_form_firstname" name="firstname" maxlength="100" placeholder="Required"></td>
+              </tr>
+              <tr>
+                <td>Last Name:</td>
+                <td><input type="text" id="cx_webchat_form_lastname" name="lastname" maxlength="100" placeholder="Required"></td>
+              </tr>
+              <tr>
+                <td>Email:</td>
+                <td><input type="text" id="cx_webchat_form_email" name="email" maxlength="100" placeholder="Optional"></td>
+              </tr>
+              <tr>
+                <td>Subject:</td>
+                <td><input type="text" id="cx_webchat_form_subject" name="subject" maxlength="100" placeholder="Optional"></td>
+              </tr>
+            </table>
+            <button onclick="StartMessenger()">Submit</button>
+      </div>
+
+      <script>
+
+            var bFormFilled = false;
+         
+
+            Genesys("subscribe", "Messenger.ready", function(){
+                console.log('messenger ready');
+                document.getElementById("startchatbutton").style.display = "block";
+            });
+
+
+            Genesys("subscribe", "MessagingService.conversationCleared", function(){
+                console.log('messenger cleared');
+                bFormFilled = false;
+            });
+
+            Genesys("subscribe", "MessagingService.restored", function(){
+                console.log('messaging service restored');
+                bFormFilled = true;
+            });
+
+
+            function StartMessenger(){
+                Genesys("command", "Messenger.open",{},
+                        function() {
+                            bFormFilled = true;
+                            document.getElementById("contactForm").style.display = "none";
+                        },
+                        function() {
+                            /*rejected callback*/
+                        }
+                    );
+            }
+
+
+            function ShowContactForm() {
+                if (bFormFilled == false){
+                    document.getElementById("contactForm").style.display = "block";
+                }
+                else {
+                    StartMessenger();
+                }
+
+            }
+            </script>
+    </body>
+</html>
