@@ -80,19 +80,29 @@
     </script>
 -->
 
-<!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
-  <script type="text/javascript" charset="utf-8">
-      Genesys("command", "Database.set", { 
-        messaging: {
-           customAttributes: {
-             key: 'value' 
-            }
-          }
-        }
-        );
+<!-- EXTRA SETUP DATABASE PLUGIN FOR WEB MESSENGER -->
+Https://developer.genesys.cloud/commdigital/digital/webmessaging/messengersdk/pluginExamples#define-and-send-custom-attributes -->
+<script type="text/javascript" charset="utf-8">
+  Genesys("command", "Database.set", {
+    messaging: {
+      customAttributes: {
+        department: "sales",
+        property_type: "home_office",
+        device: "mobile"
+      }
+    }
+  });
 
-  </script>
--->   
+  Genesys("command", "Database.update", {
+    messaging: {
+      customAttributes: {
+        department: "support",
+        booking_id: "54321"
+      }
+    }
+  });
+</script>
+
 
 <!-- EXTRA SETUP FROM SDK FOR WEB MESSENGER
   <script type="text/javascript" charset="utf-8">

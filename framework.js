@@ -1,4 +1,4 @@
-//version_02
+//version_04
 window.Framework = {
     config: {
         name: "AcmeCRM",
@@ -19,7 +19,7 @@ window.Framework = {
             enableServerSideLogging: true,
             enableCallHistory: true,
             defaultOutboundSMSCountryCode: "+1",
-            searchTargets: ["people", "queues", "frameworkContacts", "externalContacts"],
+            searchTargets: ["people", "queues", "externalContacts"],
             callControls: ["pickup", "hold", "mute", "transfer", "disconnect", "record", "securePause", "dtmf", "scheduleCallback", "flag", "requestAfterCallWork"],
             //callControls: ["pickup", "transfer", "mute", "disconnect"],
             theme: {
